@@ -100,3 +100,41 @@ function generateSpecialFood() {
     }
 }
 
+function getAvailableDirections(head = snake[0]) {
+    const directions = [
+        { x: 1, y:0 }, {x: -1, y: 0}, {x: 0, y: 1}, {x: 0, y: -1}
+    ];
+    return directions.filter(dir => {
+        const nextHead = getNextHead(dir, head);
+        return !isCollision(nextHead, snake.slice(0, -1));
+    });
+}
+
+function findPath(start, goal, snk) {
+    const queue = [[start]];
+    const visited = new Set();
+
+    while (queue.length > 0) {
+        const path = queue.shift()
+        const current = path[path.length - 1];
+
+        if (current.x === goal.x && current.y === goal.y) {
+            return path;
+        }
+
+        const directions = [
+            {x: 1, y: 0}, {x: -1, y: 0}, {x: 0, y: 1}, {x: 0, y: -1} 
+        ];
+
+        for(const dir of directions) {
+            const next = getNextHead(dir, current);
+            const key = `${next.x},${next.y}`;
+
+            if (!visited.has(key) && !isCollision(next, snk)) {
+                visited.add(key);
+                queue.push([...path, next]);
+            }
+        }
+    }
+    return null;
+}
