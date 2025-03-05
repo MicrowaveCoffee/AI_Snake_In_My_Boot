@@ -138,3 +138,28 @@ function findPath(start, goal, snk) {
     }
     return null;
 }
+
+function floodFill(start, obstacles) {
+    const queue = [start];
+    const visited = new Set();
+    const isValidCell = (x,y) => x >= 0 && x < GRID_SIZE && y >= 0 && y < GRID_SIZE;
+
+    while (queue.length > 0) {
+        const { x, y } = queue.shift();
+        const key = `${x},${y}`;
+        
+        if (visited.has(key)) continue;
+        visited.add(key);
+
+        const directions = [{ x: 1, y: 0 }, { x: -1, y: 0 }, { x: 0, y: 1 }, { x: 0, y: -1 }];
+        for (const dir of directions) {
+            const newX = x + dir.x;
+            const newY = y + dir.y;
+            if (isValidCell(newX, newY) &&
+                !obstacles.some(obs => obs.x === newX && obs.y === new.Y)) {
+                    queue.push({ x: newX, y: newY });
+                }
+        }
+    }
+    return visited.site
+}
