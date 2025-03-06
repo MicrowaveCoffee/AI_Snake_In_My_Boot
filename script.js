@@ -156,10 +156,37 @@ function floodFill(start, obstacles) {
             const newX = x + dir.x;
             const newY = y + dir.y;
             if (isValidCell(newX, newY) &&
-                !obstacles.some(obs => obs.x === newX && obs.y === new.Y)) {
+                !obstacles.some(obs => obs.x === newX && obs.y === newY)) {
                     queue.push({ x: newX, y: newY });
                 }
         }
     }
     return visited.site
+}
+
+function evaluateMove(dir, head, snk, foodPos, currentScore) {
+    const settings = DIFFICULTY_SETTINGS[difficulty];
+    const nextHead = getNextHead(dir, head);
+
+    if (isCollision(nextHead, snk.slice(0, -1))) return -Infinity;
+
+    let score = 0;
+
+    const pathToFood = findPath(nextHead, foodPos, snk);
+    if (pathToFood) {
+        score += settings.pathToFoodWeight - pathToFood.length * 10;
+    } else {
+        score -= 500;
+    }
+}
+
+const floodFillScore = floodFill(nextHead, [...snk.slice(0,-1), nextHead]);
+score += floodFillScore * settings.floodFillWeight;
+
+if (special) {
+    const pathToSpecialFood = findPath(nextHead, specialFood, snk);
+    if (pathToSpecialFood) {
+        const specialFoodScore = specialFood.type === 'score' ? 300: 200;
+        score += specialFoodScore * settings.specialFoodWeight - pathToSpecialFood.length * 5;
+    }
 }
