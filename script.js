@@ -183,10 +183,44 @@ function evaluateMove(dir, head, snk, foodPos, currentScore) {
 const floodFillScore = floodFill(nextHead, [...snk.slice(0,-1), nextHead]);
 score += floodFillScore * settings.floodFillWeight;
 
-if (special) {
+if (specialFood) {
     const pathToSpecialFood = findPath(nextHead, specialFood, snk);
     if (pathToSpecialFood) {
         const specialFoodScore = specialFood.type === 'score' ? 300: 200;
         score += specialFoodScore * settings.specialFoodWeight - pathToSpecialFood.length * 5;
+    }
+}
+
+if (currentScore >= CAREFUL_THRESHOLD) {
+    const carefulness = Math.min((currentScore - CAREFUL_THRESHOLD)/
+                                 (TARGET_SCORE - CAREFUL_THRESHOLD), 1) *
+                                 settings.carefulnessMultiplier;
+
+    score *= (1 - carefulness * 0.4);
+
+    score += floodFillScore * carefulness * 25;
+
+    const frontCollision = snk.slice(1).some(segment =>
+        segment.x === nextHead.x + dir.x && segment.y === nextHead.y + dir.y
+    );
+    if (frontCollision) {
+        score -= 1000 * carefulness;
+    }
+
+    const pathToTail = findPath(nextHead, snk[snk.length - 1], snk.slice(0, -1));
+    if (pathToTail) {
+        score += 300 * carefulness;
+    } else {
+        score -= 600 * carefulness;
+    }
+
+    const oppositeDir = { x: -dir.x, y: -dir.y };
+    const behindHead = getNextHead(oppositeDir, head);
+    if(!isCollision(behindHead,snk)) {
+        const spaceBeforeMove = floodFill(behindHead, snk);
+        const spaceAfterMove = floodFill(behindHead, [...snk, nextHead]);
+        if (spaceAfterMove < spaceBeforeMove) {
+            score -= (spaceBeforeMove - spaceAfterMove) * 15 * carefulness;
+        }
     }
 }
