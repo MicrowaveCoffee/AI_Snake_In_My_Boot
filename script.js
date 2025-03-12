@@ -233,3 +233,25 @@ function evaluateMove(dir, head, snk, foodPos, currentScore) {
     return score;
 }
 
+function chooseDirection() {
+    const availableDirections = getAvailableDirections();
+    if (availableDirections.length === 0) return null;
+    
+    const settings = DIFFICULTY_SETTINGS[difficulty];
+
+    if ((movesSinceLastFood > GRID_SIZE * 2 && customRandom() < settings.makeRandomMove) ||
+        (difficulty === 'easy' && customRandom() < 0.2)) {
+            return availableDirections[Math.floor(customRandom() * availableDirections.length)];
+    }
+
+    const head = snake[0];
+    const scores = availableDirections.map(dir => ({
+        direction:dir,
+        score: evaluateMove(dir, head, snake, food, score)
+    }));
+
+    return scores.reduce((best, current) => 
+        current.score > best.score ? current : best
+    ).direction;
+}
+
