@@ -254,4 +254,42 @@ function chooseDirection() {
         current.score > best.score ? current : best
     ).direction;
 }
+function moveSnake() {
+    if (gameOver || !gameStarted) return;
+
+    const newDirection = chooseDirection();
+    if (!newDirection) {
+      endGame();
+      return;
+    }
+
+    direction = newDirection;
+    const newHead = getNextHead(direction);
+    snake = [newHead, ...snake];
+
+    if (newHead.x === food.x && newHead.y === food.y) {
+      score += 1;
+      generateFood();
+      movesSinceLastFood = 0;
+    } else if (specialFood && newHead.x === specialFood.x && newHead.y === specialFood.y) {
+      if (specialFood.type === 'score') {
+        score += 3;
+      }
+      specialFood = null;
+      movesSinceLastFood = 0;
+    } else {
+      snake.pop();
+      movesSinceLastFood += 1;
+    }
+
+    if (!specialFood) generateSpecialFood();
+
+    // Check if the game is won
+    if (score >= TARGET_SCORE) {
+      endGame(true);
+      return;
+    }
+
+    renderGame();
+  }
 
