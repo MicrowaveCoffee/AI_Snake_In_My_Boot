@@ -293,3 +293,18 @@ function moveSnake() {
     renderGame();
   }
 
+  function startGameLoop() {
+    if (gameLoopId) clearInterval(gameLoopId);
+    
+    const settings = DIFFICULTY_SETTINGS[difficulty];
+    let gameLoopInterval = settings.gameLoopInterval;
+    
+    // Adjust for special food speed boost
+    if (specialFood && specialFood.type === 'speed') {
+      gameLoopInterval = Math.max(gameLoopInterval * 0.5, 40);
+    }
+    
+    gameLoopId = setInterval(moveSnake, gameLoopInterval);
+  }
+
+
