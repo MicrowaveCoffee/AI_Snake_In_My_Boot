@@ -308,3 +308,10 @@ function moveSnake() {
   }
 
 
+  function endGame(isWin = false) {
+    gameOver = true;
+    clearInterval(gameLoopId);
+    renderGameOver(isWin);
+  }
+
+
