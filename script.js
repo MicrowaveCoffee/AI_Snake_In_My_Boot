@@ -314,4 +314,15 @@ function moveSnake() {
     renderGameOver(isWin);
   }
 
+  function initGameBoard() {
+    const gameContainer = document.getElementById('gameContainer');
+    gameContainer.innerHTML = `
+      <h1>AI Snake Game v4.5</h1>
+      <div class="difficulty-indicator">Difficulty: ${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}</div>
+      <div class="game-board" id="gameBoard" style="width: ${GRID_SIZE * CELL_SIZE}px; height: ${GRID_SIZE * CELL_SIZE}px"></div>
+      <div class="score" id="scoreDisplay">Score: 0 / ${TARGET_SCORE}</div>
+      <div class="game-over" id="gameOverDisplay"></div>
+    `;
+  }
+
 
