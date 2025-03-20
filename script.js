@@ -284,7 +284,7 @@ function moveSnake() {
 
     if (!specialFood) generateSpecialFood();
 
-    // Check if the game is won
+    
     if (score >= TARGET_SCORE) {
       endGame(true);
       return;
@@ -299,7 +299,7 @@ function moveSnake() {
     const settings = DIFFICULTY_SETTINGS[difficulty];
     let gameLoopInterval = settings.gameLoopInterval;
     
-    // Adjust for special food speed boost
+    
     if (specialFood && specialFood.type === 'speed') {
       gameLoopInterval = Math.max(gameLoopInterval * 0.5, 40);
     }
@@ -324,5 +324,23 @@ function moveSnake() {
       <div class="game-over" id="gameOverDisplay"></div>
     `;
   }
-
-
+  function renderGame() {
+    if (!gameStarted) return;
+    
+    const gameBoard = document.getElementById('gameBoard');
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    
+   
+    gameBoard.innerHTML = '';
+    
+    
+    snake.forEach((segment, index) => {
+      const segmentElement = document.createElement('div');
+      segmentElement.className = index === 0 ? 'snake-segment snake-head' : 'snake-segment';
+      segmentElement.style.width = `${CELL_SIZE}px`;
+      segmentElement.style.height = `${CELL_SIZE}px`;
+      segmentElement.style.left = `${segment.x * CELL_SIZE}px`;
+      segmentElement.style.top = `${segment.y * CELL_SIZE}px`;
+      gameBoard.appendChild(segmentElement);
+    });
+  }
