@@ -254,6 +254,7 @@ function chooseDirection() {
         current.score > best.score ? current : best
     ).direction;
 }
+
 function moveSnake() {
     if (gameOver || !gameStarted) return;
 
@@ -291,9 +292,10 @@ function moveSnake() {
     }
 
     renderGame();
-  }
+}
 
-  function startGameLoop() {
+
+function startGameLoop() {
     if (gameLoopId) clearInterval(gameLoopId);
     
     const settings = DIFFICULTY_SETTINGS[difficulty];
@@ -305,16 +307,16 @@ function moveSnake() {
     }
     
     gameLoopId = setInterval(moveSnake, gameLoopInterval);
-  }
+}
 
 
-  function endGame(isWin = false) {
+function endGame(isWin = false) {
     gameOver = true;
     clearInterval(gameLoopId);
     renderGameOver(isWin);
-  }
+}
 
-  function initGameBoard() {
+function initGameBoard() {
     const gameContainer = document.getElementById('gameContainer');
     gameContainer.innerHTML = `
       <h1>AI Snake Game v4.5</h1>
@@ -323,14 +325,14 @@ function moveSnake() {
       <div class="score" id="scoreDisplay">Score: 0 / ${TARGET_SCORE}</div>
       <div class="game-over" id="gameOverDisplay"></div>
     `;
-  }
-  function renderGame() {
+}
+function renderGame() {
     if (!gameStarted) return;
     
     const gameBoard = document.getElementById('gameBoard');
     const scoreDisplay = document.getElementById('scoreDisplay');
     
-   
+    
     gameBoard.innerHTML = '';
     
     
@@ -343,4 +345,27 @@ function moveSnake() {
       segmentElement.style.top = `${segment.y * CELL_SIZE}px`;
       gameBoard.appendChild(segmentElement);
     });
-  }
+    
+    
+    const foodElement = document.createElement('div');
+    foodElement.className = 'food';
+    foodElement.style.width = `${CELL_SIZE}px`;
+    foodElement.style.height = `${CELL_SIZE}px`;
+    foodElement.style.left = `${food.x * CELL_SIZE}px`;
+    foodElement.style.top = `${food.y * CELL_SIZE}px`;
+    gameBoard.appendChild(foodElement);
+    
+    
+    if (specialFood) {
+      const specialFoodElement = document.createElement('div');
+      specialFoodElement.className = `special-food special-food-${specialFood.type}`;
+      specialFoodElement.style.width = `${CELL_SIZE}px`;
+      specialFoodElement.style.height = `${CELL_SIZE}px`;
+      specialFoodElement.style.left = `${specialFood.x * CELL_SIZE}px`;
+      specialFoodElement.style.top = `${specialFood.y * CELL_SIZE}px`;
+      gameBoard.appendChild(specialFoodElement);
+    }
+    
+    
+    scoreDisplay.textContent = `Score: ${score} / ${TARGET_SCORE}`;
+}
