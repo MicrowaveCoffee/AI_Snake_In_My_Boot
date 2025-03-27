@@ -369,3 +369,19 @@ function renderGame() {
     
     scoreDisplay.textContent = `Score: ${score} / ${TARGET_SCORE}`;
 }
+
+function renderGameOver(isWin) {
+    const gameOverDisplay = document.getElementById('gameOverDisplay');
+    gameOverDisplay.innerHTML = `
+      <div class="game-over-message">
+        ${isWin ? "Congratulations! You've won!" : "Game Over!"}
+      </div>
+      <div class="button-container">
+        <button class="restart-button" id="restartButton">Restart Game</button>
+        <button class="change-difficulty-button" id="changeDifficultyButton">Change Difficulty</button>
+      </div>
+    `;
+    
+    document.getElementById('restartButton').addEventListener('click', restartGame);
+    document.getElementById('changeDifficultyButton').addEventListener('click', showDifficultySelection);
+  }
