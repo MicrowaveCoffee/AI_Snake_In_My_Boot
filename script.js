@@ -384,4 +384,29 @@ function renderGameOver(isWin) {
     
     document.getElementById('restartButton').addEventListener('click', restartGame);
     document.getElementById('changeDifficultyButton').addEventListener('click', showDifficultySelection);
-  }
+}
+
+function renderDifficultySelection() {
+    const gameContainer = document.getElementById('gameContainer');
+    gameContainer.innerHTML = `
+      <h1>AI Snake Game v4.5</h1>
+      <div class="difficulty-selection">
+        <h2>Select Difficulty</h2>
+        <div class="difficulty-buttons">
+          <button class="easy-button" id="easyButton">Easy</button>
+          <button class="medium-button" id="mediumButton">Medium</button>
+          <button class="hard-button" id="hardButton">Hard</button>
+        </div>
+        <div class="difficulty-info">
+          <p><strong>Easy:</strong> The AI makes more mistakes and moves slower.</p>
+          <p><strong>Medium:</strong> Balanced AI with occasional mistakes.</p>
+          <p><strong>Hard:</strong> Advanced AI that makes optimal moves and moves faster.</p>
+        </div>
+      </div>
+    `;
+    
+    document.getElementById('easyButton').addEventListener('click', () => startGame('easy'));
+    document.getElementById('mediumButton').addEventListener('click', () => startGame('medium'));
+    document.getElementById('hardButton').addEventListener('click', () => startGame('hard'));
+}
+
