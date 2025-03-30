@@ -409,4 +409,9 @@ function renderDifficultySelection() {
     document.getElementById('mediumButton').addEventListener('click', () => startGame('medium'));
     document.getElementById('hardButton').addEventListener('click', () => startGame('hard'));
 }
+function showDifficultySelection() {
+    gameStarted = false;
+    if (gameLoopId) clearInterval(gameLoopId);
+    renderDifficultySelection();
+  }
 
