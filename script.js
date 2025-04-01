@@ -413,5 +413,21 @@ function showDifficultySelection() {
     gameStarted = false;
     if (gameLoopId) clearInterval(gameLoopId);
     renderDifficultySelection();
-  }
+}
+
+function startGame(selectedDifficulty) {
+    difficulty = selectedDifficulty;
+    snake = [...INITIAL_SNAKE];
+    direction = { ...INITIAL_DIRECTION };
+    gameOver = false;
+    score = 0;
+    movesSinceLastFood = 0;
+    specialFood = null;
+    gameStarted = true;
+    
+    initGameBoard();
+    generateFood();
+    renderGame();
+    startGameLoop();
+}
 
