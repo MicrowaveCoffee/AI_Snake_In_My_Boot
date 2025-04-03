@@ -430,4 +430,17 @@ function startGame(selectedDifficulty) {
     renderGame();
     startGameLoop();
 }
+function restartGame() {
+    snake = [...INITIAL_SNAKE];
+    direction = { ...INITIAL_DIRECTION };
+    gameOver = false;
+    score = 0;
+    movesSinceLastFood = 0;
+    specialFood = null;
+    
+    document.getElementById('gameOverDisplay').innerHTML = '';
+    generateFood();
+    renderGame();
+    startGameLoop();
+}
 
